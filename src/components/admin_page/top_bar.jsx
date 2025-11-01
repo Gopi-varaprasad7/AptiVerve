@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, LogOut, User } from 'lucide-react';
 import Question_Form from './question_form';
 import { useNavigate } from 'react-router-dom';
+import ManageQuestion from './manage_questions';
 
 const Top_Bar = () => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const Top_Bar = () => {
         </div>
       </div>
       <div>{isActive === 'add_question' && <Question_Form />}</div>
+      <div>{isActive === 'manage_questions' && <ManageQuestion />}</div>
     </div>
   );
 };
