@@ -1,8 +1,8 @@
-
 import { BookOpen } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 
 const Title_Header = () => {
+  const navigate = useNavigate();
   return (
     <div className='flex items-center justify-center flex-col mx-8 mt-24'>
       <div className='flex gap-4'>
@@ -16,7 +16,7 @@ const Title_Header = () => {
       <div className='mt-12 flex gap-4 flex-wrap'>
         <button
           className='w-84 h-12 border rounded-lg bg-blue-400 text-white text-lg transform transition-transform duration-300 hover:scale-105'
-          onClick={() => ''}
+          onClick={() => navigate('/login')}
         >
           Get Started
         </button>

@@ -15,7 +15,7 @@ const Registration = () => {
     <>
       <div className='m-4 flex gap-4' onClick={handleClick}>
         <BookOpen className='text-blue-400 w-8 h-8' />
-        <h1 className='text-2xl'>AptiVerve</h1>
+        <h1 className='text-2xl font-bold text-blue-400'>AptiVerve</h1>
       </div>
       <div className='flex justify-center items-center mt-16'>
         <div className='shadow-lg  p-16 rounded'>

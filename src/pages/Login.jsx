@@ -15,9 +15,9 @@ const Login = () => {
     <>
       <div className='m-4 flex gap-4' onClick={handleClick}>
         <BookOpen className='text-blue-400 w-8 h-8' />
-        <h1 className='text-2xl'>AptiVerve</h1>
+        <h1 className='text-2xl font-bold text-blue-400'>AptiVerve</h1>
       </div>
-      <div className='flex justify-center items-center mt-36'>
+      <div className='flex justify-center items-center mt-12 lg:mt-36'>
         <div className='shadow-lg  p-16 rounded'>
           <div className='flex items-center justify-center'>
             <BookOpen className='w-12 h-12 text-blue-400 text-center' />
