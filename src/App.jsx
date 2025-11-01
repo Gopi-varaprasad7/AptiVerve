@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import AddQuestion from './pages/AddQuestion';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path='/add_question' element={<AddQuestion />} />
         <Route path='/home' element={<HomePage />} />
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/settings' element={<SettingsPage />} />
       </Routes>
     </Router>
   );
