@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+
 import { BookOpen } from 'lucide-react';
-import Registration from '../../pages/Registration';
+
 
 const Title_Header = () => {
-  const [clickRegister, setClickRegister] = useState(false);
   return (
     <div className='flex items-center justify-center flex-col mx-8 mt-24'>
       <div className='flex gap-4'>
