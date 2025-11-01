@@ -3,9 +3,9 @@ import { BookOpen, LogOut, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import UserPopup from '../user_popup';
 
-const Home_Bar = () => {
+const Topbar = () => {
   const navigate = useNavigate();
-  const [isActive, setIsActive] = useState('Practice');
+  const [isActive, setIsActive] = useState('');
   const [userPopup, setUserPopup] = useState(false);
 
   return (
@@ -59,4 +59,4 @@ const Home_Bar = () => {
   );
 };
 
-export default Home_Bar;
+export default Topbar;
