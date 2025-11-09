@@ -3,14 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
-<<<<<<< HEAD
 import AddQuestion from './pages/AddQuestion';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
-=======
 import { Toaster } from 'react-hot-toast';
->>>>>>> 483da16 (registration logic added)
 
 const App = () => {
   return (
