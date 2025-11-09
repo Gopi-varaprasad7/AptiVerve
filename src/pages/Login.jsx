@@ -1,75 +1,131 @@
 import React, { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('user');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    role: 'user',
+  });
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate('/');
   };
+
+  // 🔹 Handle form input changes
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // 🔹 Handle login submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      toast.error('Please fill all fields!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/login', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Login successful!');
+        console.log('✅ Login success:', data);
+        navigate('/home');
+      } else {
+        toast.error(data.message || 'Invalid credentials');
+      }
+    } catch (error) {
+      console.error('❌ Error:', error);
+      toast.error('Something went wrong');
+    }
+  };
+
   return (
     <>
-      <div className='m-4 flex gap-4' onClick={handleClick}>
+      <div className='m-4 flex gap-4 cursor-pointer' onClick={handleClick}>
         <BookOpen className='text-blue-400 w-8 h-8' />
         <h1 className='text-2xl font-bold text-blue-400'>AptiVerve</h1>
       </div>
-      <div className='flex justify-center items-center mt-12 lg:mt-36'>
-        <div className='shadow-lg  p-16 rounded'>
-          <div className='flex items-center justify-center'>
-            <BookOpen className='w-12 h-12 text-blue-400 text-center' />
+
+      <div className='flex justify-center items-center mt-36'>
+        <div className='shadow-lg p-16 rounded-2xl w-[400px]'>
+          <div className='flex items-center justify-center mb-4'>
+            <BookOpen className='w-12 h-12 text-blue-400' />
           </div>
           <h2 className='text-2xl font-semibold text-center'>
             Welcome to AptiVerve
           </h2>
-          <p className='text-center text-gray-400'>
+          <p className='text-center text-gray-400 mb-4'>
             Sign in to continue your learning journey
           </p>
+
+          {/* Role toggle */}
           <div className='border bg-gray-400 text-white flex justify-between rounded-lg mt-2'>
             <button
-              onClick={() => setRole('user')}
-              className={`w-42 h-12 border rounded-l-lg ${
-                role === 'user' ? 'bg-blue-400' : 'bg-gray-400'
+              type='button'
+              onClick={() => setFormData({ ...formData, role: 'user' })}
+              className={`w-1/2 h-12 rounded-l-lg ${
+                formData.role === 'user' ? 'bg-blue-400' : 'bg-gray-400'
               }`}
             >
               User
             </button>
             <button
-              onClick={() => setRole('admin')}
-              className={`w-42 h-12 border rounded-r-lg ${
-                role === 'admin' ? 'bg-blue-400' : 'bg-gray-400'
+              type='button'
+              onClick={() => setFormData({ ...formData, role: 'admin' })}
+              className={`w-1/2 h-12 rounded-r-lg ${
+                formData.role === 'admin' ? 'bg-blue-400' : 'bg-gray-400'
               }`}
             >
               Admin
             </button>
           </div>
-          <form className='mt-4'>
+
+          {/* Login form */}
+          <form className='mt-4' onSubmit={handleSubmit}>
             <label>Email</label>
-            <br />
             <input
               type='email'
+              name='email'
               placeholder='name@gmail.com'
-              className='text-gray-400 border border-gray-400 rounded w-84 h-12 pl-4 mb-2'
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
+              className='text-gray-700 border border-gray-400 rounded w-full h-12 pl-4 mb-3'
             />
-            <br />
+
             <label>Password</label>
-            <br />
             <input
               type='password'
-              placeholder='.........'
-              className='text-gray-400 border border-gray-400 rounded w-84 h-12 pl-4 mb-2'
-              onChange={(e) => setPassword(e.target.value)}
+              name='password'
+              placeholder='********'
+              value={formData.password}
+              onChange={handleChange}
+              className='text-gray-700 border border-gray-400 rounded w-full h-12 pl-4 mb-4'
             />
-            <br />
-            <button className='w-84 h-12 border rounded-lg bg-blue-400 text-white text-lg mt-8 mb-2 transform transition-transform duration-300 hover:scale-105'>
+
+            <button
+              type='submit'
+              className='w-full h-12 bg-blue-400 text-white text-lg rounded-lg mt-4 hover:scale-105 transition-transform duration-300'
+            >
               Sign In
             </button>
           </form>
-          <p className='text-gray-400 text-justify'>
+
+          <p className='text-gray-400 text-center mt-4'>
             Don't have an account?{' '}
             <a href='/register' className='text-blue-400 underline'>
               Sign Up
