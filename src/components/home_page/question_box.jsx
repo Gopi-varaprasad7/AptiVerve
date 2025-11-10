@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { questions } from '../../datas/data';
+import { questions } from '../../../datas/data';
 
 const QuestionBox = () => {
   const [selectedOptions, setSelectedOptions] = useState({});
