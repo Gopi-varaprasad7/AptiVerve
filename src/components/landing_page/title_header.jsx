@@ -20,7 +20,10 @@ const Title_Header = () => {
         >
           Get Started
         </button>
-        <button className='w-84 h-12 border rounded-lg hover:bg-blue-400 hover:text-white text-lg'>
+        <button
+          className='w-84 h-12 border rounded-lg hover:bg-blue-400 hover:text-white text-lg'
+          onClick={() => navigate('/home')}
+        >
           Browse Questions
         </button>
       </div>

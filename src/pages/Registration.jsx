@@ -71,17 +71,21 @@ const Registration = () => {
         }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
         toast.success('Account created successfully!');
-        console.log('✅ Registration successful:', data);
+        localStorage.setItem(
+          'userData',
+          JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+          })
+        );
         navigate('/login');
       } else {
-        toast.error(data.message || 'Registration failed');
+        toast.error('Registration failed');
       }
     } catch (error) {
-      console.error('❌ Error:', error);
+      console.error('❌ Error during registration:', error);
       toast.error('Something went wrong');
     }
   };

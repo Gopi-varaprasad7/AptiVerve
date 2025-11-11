@@ -37,6 +37,7 @@ const Topbar = () => {
           >
             Practice
           </button>
+          {isActive === 'manage_questions' ? navigate('/home') : null}
 
           <User
             size={32}

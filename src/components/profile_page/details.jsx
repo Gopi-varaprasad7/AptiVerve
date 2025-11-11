@@ -10,6 +10,10 @@ import {
 } from 'lucide-react';
 
 const Details = () => {
+  const user = JSON.parse(localStorage.getItem('userData')) || {
+    name: 'Guest User',
+    email: '',
+  };
   return (
     <div className='m-8 flex flex-col gap-8'>
       <div className='border flex p-4 items-center border-gray-300 rounded-lg '>
@@ -18,13 +22,13 @@ const Details = () => {
         </div>
         <div className='ml-4'>
           <section className='flex gap-4'>
-            <h2>Gopivaraprasad Koduri</h2>
+            <h2>{user.name}</h2>
             <p className='bg-blue-200 rounded-xl px-2'>user</p>
           </section>
           <section className='flex gap-4 text-sm text-gray-500'>
             <div className='flex gap-2 items-center'>
               <Mail size={16} />
-              <p>john@example.com</p>
+              <p>{user.email}</p>
             </div>
             <div className='flex gap-2 items-center'>
               <CalendarFold size={16} />
