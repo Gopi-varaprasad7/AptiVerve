@@ -33,18 +33,37 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/login', {
+      // Decide API based on role
+      const apiUrl =
+        formData.role === 'admin'
+          ? 'http://localhost:3001/api/admin/login'
+          : 'http://localhost:3001/api/login';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Login successful!');
-        console.log('✅ Login success:', data);
-        navigate('/home');
+        toast.success(`${formData.role} login successful!`);
+        formData.email = '';
+        formData.password = '';
+
+        // Save token if you want
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', formData.role);
+
+        if (formData.role === 'admin') {
+          navigate('/add_question');
+        } else {
+          navigate('/home');
+        }
       } else {
         toast.error(data.message || 'Invalid credentials');
       }
