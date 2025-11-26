@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <div>
       <Home_Bar />
-      <div className='m-8'>
+      <div className='ml-8'>
         <h1 className='text-2xl font-poppins font-semibold'>
           Practice Questions
         </h1>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { questions } from '../../../datas/data';
+import React, { useState, useEffect } from 'react';
+import { useAdmin } from '../../context/adminContext';
 
 const QuestionBox = () => {
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const questionsPerPage = 5;
 
@@ -20,9 +21,17 @@ const QuestionBox = () => {
   const handlePageChange = (pageNum) => {
     if (pageNum >= 1 && pageNum <= totalPages) setCurrentPage(pageNum);
   };
+  const { getAllQuestions } = useAdmin();
+
+  useEffect(() => {
+    (async () => {
+      const data = await getAllQuestions();
+      setQuestions(data);
+    })();
+  }, []);
 
   return (
-    <div className='w-full flex flex-col items-center gap-6 py-6 bg-gray-50'>
+    <div className='w-full flex flex-col items-center gap-6 max-h-[700px] overflow-y-auto'>
       <div className='w-full max-w-5xl'>
         {/* Question Cards */}
         {currentQuestions.map((item, index) => {
