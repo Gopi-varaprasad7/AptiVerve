@@ -7,6 +7,7 @@ import AddQuestion from './pages/AddQuestion';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
+import Users from './components/admin_page/users';
 import { Toaster } from 'react-hot-toast';
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
         <Route path='/home' element={<HomePage />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/settings' element={<SettingsPage />} />
+        <Route path='/users' element={<Users />} />
       </Routes>
     </Router>
   );

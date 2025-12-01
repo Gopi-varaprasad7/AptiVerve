@@ -43,7 +43,7 @@ const Top_Bar = () => {
 
           <User
             size={32}
-            onClick={() => setIsActive('user')}
+            onClick={() => navigate('/users')}
             className={`p-2 rounded-md cursor-pointer ${
               isActive === 'user' ? 'text-blue-400' : 'text-gray-400'
             } hover:text-blue-500  transition`}

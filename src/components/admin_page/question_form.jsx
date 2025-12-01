@@ -6,14 +6,14 @@ import { useState } from 'react';
 const Question_Form = () => {
   const { createQuestion } = useAdmin();
 
-  const [catchaegory, setCategory] = useState('');
+  const [category, setCategory] = useState('');
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState({ A: '', B: '', C: '', D: '' });
   const [correctAnswer, setCorrectAnswer] = useState('');
 
   const handleSubmit = async () => {
     if (
-      !catchaegory ||
+      !category ||
       !question ||
       !options.A ||
       !options.B ||
@@ -25,7 +25,7 @@ const Question_Form = () => {
       return;
     }
     const questionData = {
-      category: catchaegory,
+      category: category,
       question,
       options,
       ans: correctAnswer,
@@ -58,7 +58,7 @@ const Question_Form = () => {
           <label>Category*</label>
           <select
             className='w-full border border-gray-300 text-gray-400 rounded-md p-2 mt-2 mb-4'
-            value={catchaegory}
+            value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value=''>Select Category</option>
