@@ -33,7 +33,6 @@ const Login = () => {
     }
 
     try {
-      // Decide API based on role
       const apiUrl =
         formData.role === 'admin'
           ? 'http://localhost:3001/api/admin/login'
@@ -45,6 +44,7 @@ const Login = () => {
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
+          role: formData.role,
         }),
       });
 
@@ -58,6 +58,7 @@ const Login = () => {
         // Save token if you want
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', formData.role);
+        localStorage.setItem('userId', data.userId);
 
         if (formData.role === 'admin') {
           navigate('/add_question');

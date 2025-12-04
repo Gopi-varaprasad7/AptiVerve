@@ -68,6 +68,7 @@ const Question_Form = () => {
             <option>Profit & Loss</option>
             <option>Percentage</option>
             <option>Ratio</option>
+            <option>Boats</option>
           </select>
           <label>Question*</label>
           <textarea

@@ -5,9 +5,12 @@ import { toast } from 'react-hot-toast';
 
 const QuestionBox = () => {
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [answerStatus, setAnswerStatus] = useState({}); // stores correctness
+  const [answerStatus, setAnswerStatus] = useState({});
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const questionsPerPage = 5;
   const totalPages = Math.ceil(questions.length / questionsPerPage);
@@ -19,7 +22,7 @@ const QuestionBox = () => {
   );
 
   const { getAllQuestions } = useAdmin();
-  const { postSolvedQuestions } = useUser();
+  const { postSolvedQuestions, explain } = useUser();
 
   useEffect(() => {
     (async () => {
@@ -29,22 +32,42 @@ const QuestionBox = () => {
   }, []);
 
   // ===== Submit Answer =====
-  const handleSubmitAnswer = async (item, actualIndex) => {
-    const selected = selectedOptions[actualIndex];
-    if (!selected) return;
+  const handleSubmitAnswer = async (
+    questionId,
+    question,
+    category,
+    selectedAnswer,
+    options,
+    correctAnswer
+  ) => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      toast.error('User not logged in!');
+      return;
+    }
+    const selectedValue = options[selectedAnswer];
+    const isCorrect = selectedValue === correctAnswer;
 
-    const correct = item.answer; // from DB
-
+    // Update local state
     setAnswerStatus((prev) => ({
       ...prev,
-      [actualIndex]: {
-        selectedAnswer: selected,
-        correctAnswer: correct,
-      },
+      [questionId]: { selectedAnswer, correctAnswer },
     }));
 
-    // Save AI explanation history
-    await postSolvedQuestions(item.question);
+    // Post to backend
+    await postSolvedQuestions({
+      userId,
+      questionId,
+      question,
+      category,
+      correct: isCorrect,
+    });
+
+    toast.success(
+      isCorrect
+        ? 'Correct Answer! 🎉'
+        : `Wrong Answer! Correct is ${correctAnswer}`
+    );
   };
 
   return (
@@ -53,7 +76,7 @@ const QuestionBox = () => {
         {/* Question Cards */}
         {currentQuestions.map((item, index) => {
           const actualIndex = startIndex + index;
-          const status = answerStatus[actualIndex];
+          const status = answerStatus[item._id];
 
           return (
             <div
@@ -84,12 +107,10 @@ const QuestionBox = () => {
                   let bg = 'border-gray-200 hover:bg-gray-50';
 
                   if (status) {
-                    if (key === status.correctAnswer)
+                    if (value === status.correctAnswer)
                       bg = 'bg-green-100 border-green-500';
                     else if (key === status.selectedAnswer)
                       bg = 'bg-red-100 border-red-500';
-                  } else if (selectedOptions[actualIndex] === key) {
-                    bg = 'bg-blue-50 border-blue-300';
                   }
 
                   return (
@@ -126,7 +147,15 @@ const QuestionBox = () => {
                 <div className='flex items-center gap-3'>
                   <button
                     className='flex items-center gap-2 text-blue-600 border border-blue-200 rounded-xl px-4 py-2 hover:bg-blue-50 transition'
-                    onClick={() => postSolvedQuestions(item.question)}
+                    onClick={async () => {
+                      setLoading(true);
+                      setShowModal(true);
+
+                      const aiText = await explain(item.question);
+
+                      setModalContent(aiText);
+                      setLoading(false);
+                    }}
                   >
                     ✨ Ask AI
                   </button>
@@ -135,24 +164,13 @@ const QuestionBox = () => {
                     className='bg-blue-500 text-white px-6 py-2 rounded-xl'
                     disabled={!selectedOptions[actualIndex]}
                     onClick={async () => {
-                      const isCorrect =
-                        selectedOptions[actualIndex] === item.answer;
-
-                      await postSolvedQuestions({
-                        qid: item._id,
-                        question: item.question,
-                        category: item.category,
-                        isCorrect,
-                      });
-
-                      // highlight correct answer
-                      setSelectedOptions((prev) => ({
-                        ...prev,
-                        [actualIndex]: selectedOptions[actualIndex],
-                      }));
-
-                      toast.success(
-                        isCorrect ? 'Correct Answer!' : 'Wrong Answer'
+                      handleSubmitAnswer(
+                        item._id,
+                        item.question,
+                        item.category,
+                        selectedOptions[actualIndex],
+                        item.options,
+                        item.ans
                       );
                     }}
                   >
@@ -163,6 +181,26 @@ const QuestionBox = () => {
             </div>
           );
         })}
+        {showModal && (
+          <div className='fixed inset-0 bg-transparent bg-opacity-40 flex items-center justify-center z-50'>
+            <div className='bg-white p-6 rounded-2xl w-full max-w-lg shadow-xl animate-fadeIn'>
+              <h2 className='text-xl font-semibold mb-3 text-gray-800'>
+                AI Explanation
+              </h2>
+
+              <div className='text-gray-700 whitespace-pre-line max-h-80 overflow-y-auto border p-3 rounded-lg'>
+                {modalContent}
+              </div>
+
+              <button
+                onClick={() => setShowModal(false)}
+                className='mt-5 bg-blue-500 text-white px-5 py-2 rounded-xl hover:bg-blue-600'
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Pagination */}
         <div className='flex justify-center items-center gap-3 mt-8'>

@@ -90,7 +90,7 @@ const ManageQuestion = () => {
 
                       <td className='px-4 py-2'>{q.category}</td>
 
-                      <td className='px-4 py-2'>{q.correctAnswer}</td>
+                      <td className='px-4 py-2'>{q.ans}</td>
 
                       <td className='px-4 py-2 flex gap-8'>
                         <SquarePen

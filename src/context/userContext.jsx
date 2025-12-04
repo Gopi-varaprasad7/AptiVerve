@@ -15,16 +15,17 @@ export const UserProvider = ({ children }) => {
 
   // ---------- AI EXPLANATION API ----------
   const postSolvedQuestions = async ({
+    userId,
     qid,
     question,
     category,
-    isCorrect,
+    correct,
   }) => {
     try {
       const res = await fetch(`${base_url}/user/solved`, {
         method: 'POST',
         headers: authHeaders(),
-        body: JSON.stringify({ qid, question, category, isCorrect }),
+        body: JSON.stringify({userId, qid, question, category, correct }),
       });
 
       return await res.json();
@@ -34,10 +35,27 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const explain = async (question) => {
+    try {
+      const res = await fetch(`${base_url}/user/explain`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ question }),
+      });
+
+      const data = await res.json();
+      return data.explanation;
+    } catch (e) {
+      console.error(e);
+      toast.error('Error fetching explanation');
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
         postSolvedQuestions,
+        explain
       }}
     >
       {children}
