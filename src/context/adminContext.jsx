@@ -166,8 +166,6 @@ export const AdminProvider = ({ children }) => {
         toast.error(data.message);
         throw new Error(data.message);
       }
-
-      toast.success('Fetched User Details');
       return data;
     } catch (err) {
       toast.error(err.message);

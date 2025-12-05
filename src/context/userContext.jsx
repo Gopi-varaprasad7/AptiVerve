@@ -25,7 +25,7 @@ export const UserProvider = ({ children }) => {
       const res = await fetch(`${base_url}/user/solved`, {
         method: 'POST',
         headers: authHeaders(),
-        body: JSON.stringify({userId, qid, question, category, correct }),
+        body: JSON.stringify({ userId, qid, question, category, correct }),
       });
 
       return await res.json();
@@ -49,13 +49,29 @@ export const UserProvider = ({ children }) => {
       console.error(e);
       toast.error('Error fetching explanation');
     }
-  }
+  };
+
+  const getUser = async (userId) => {
+    try {
+      const res = await fetch(`${base_url}/user?userId=${userId}`, {
+        method: 'GET',
+        headers: authHeaders(),
+      });
+
+      const data = await res.json();
+      return data.user;
+    } catch (e) {
+      console.error(e);
+      toast.error('Error fetching user data');
+    }
+  };
 
   return (
     <UserContext.Provider
       value={{
         postSolvedQuestions,
-        explain
+        explain,
+        getUser,
       }}
     >
       {children}

@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useUser } from '../../context/userContext';
 
 const RecentActivity = () => {
+  const [userData, setUserData] = useState(null);
+  const userId = localStorage.getItem('userId');
+  const { getUser } = useUser();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (userId) {
+        const data = await getUser(userId);
+        console.log('Fetched Data:', data);
+        setUserData(data);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    console.log('Updated userData:', userData);
+  }, [userData]);
+
   const activities = [
     {
       question: 'If a clock shows 3:15, what is the angle…',
