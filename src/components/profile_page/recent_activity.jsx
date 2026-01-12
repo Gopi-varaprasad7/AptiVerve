@@ -4,6 +4,7 @@ import { useUser } from '../../context/userContext';
 const RecentActivity = () => {
   const [userData, setUserData] = useState(null);
   const userId = localStorage.getItem('userId');
+  console.log('user id: ', userId);
   const { getUser } = useUser();
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 const UserContext = createContext();
 
-const base_url = 'http://localhost:3001/api';
+const base_url = 'https://apti-backend-mcaq.onrender.com';
 
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('adminToken') || '');
@@ -53,16 +53,24 @@ export const UserProvider = ({ children }) => {
 
   const getUser = async (userId) => {
     try {
-      const res = await fetch(`${base_url}/user?userId=${userId}`, {
+      const res = await fetch(`${base_url}/user`, {
         method: 'GET',
         headers: authHeaders(),
       });
 
       const data = await res.json();
+
+      if (!res.ok) {
+        console.error('Backend Error:', data.message);
+        toast.error(data.message);
+        return null; 
+      }
+
       return data.user;
     } catch (e) {
       console.error(e);
       toast.error('Error fetching user data');
+      return null;
     }
   };
 

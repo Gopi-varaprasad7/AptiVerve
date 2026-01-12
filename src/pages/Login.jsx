@@ -35,8 +35,8 @@ const Login = () => {
     try {
       const apiUrl =
         formData.role === 'admin'
-          ? 'http://localhost:3001/api/admin/login'
-          : 'http://localhost:3001/api/login';
+          ? 'https://apti-backend-mcaq.onrender.com/admin/login'
+          : 'https://apti-backend-mcaq.onrender.com/login';
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -58,7 +58,7 @@ const Login = () => {
         // Save token if you want
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', formData.role);
-        localStorage.setItem('userId', data.userId);
+        localStorage.setItem('userId', data.id);
 
         if (formData.role === 'admin') {
           navigate('/add_question');
