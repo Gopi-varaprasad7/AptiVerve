@@ -35,8 +35,8 @@ const Login = () => {
     try {
       const apiUrl =
         formData.role === 'admin'
-          ? 'https://apti-backend-mcaq.onrender.com/admin/login'
-          : 'https://apti-backend-mcaq.onrender.com/login';
+          ? 'https://apti-backend-mcaq.onrender.com/api/admin/login'
+          : 'https://apti-backend-mcaq.onrender.com/api/login';
 
       const response = await fetch(apiUrl, {
         method: 'POST',
