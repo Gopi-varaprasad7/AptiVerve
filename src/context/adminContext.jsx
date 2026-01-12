@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 const AdminContext = createContext();
 
 // API Base URL
-const BASE_URL = 'http://localhost:3001/api';
+const BASE_URL = 'https://apti-backend-mcaq.onrender.com';
 
 // Provider Component
 export const AdminProvider = ({ children }) => {
