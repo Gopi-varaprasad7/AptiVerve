@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
 
   const explain = async (question) => {
     try {
-      const res = await fetch(`${base_url}/user/explain`, {
+      const res = await fetch(`${base_url}/api/explain`, {
         method: 'POST',
         headers: authHeaders(),
         body: JSON.stringify({ question }),
@@ -63,7 +63,7 @@ export const UserProvider = ({ children }) => {
       if (!res.ok) {
         console.error('Backend Error:', data.message);
         toast.error(data.message);
-        return null; 
+        return null;
       }
 
       return data.user;
