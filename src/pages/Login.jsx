@@ -52,13 +52,16 @@ const Login = () => {
 
       if (response.ok) {
         toast.success(`${formData.role} login successful!`);
-        formData.email = '';
-        formData.password = '';
+        setFormData({
+          email: '',
+          password: '',
+          role: formData.role,
+        });
 
         // Save token if you want
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', formData.role);
-        localStorage.setItem('userId', data.id);
+        localStorage.setItem('userId', data._id);
 
         if (formData.role === 'admin') {
           navigate('/add_question');
@@ -66,7 +69,7 @@ const Login = () => {
           navigate('/home');
         }
       } else {
-        toast.error(data.message || 'Invalid credentials');
+        toast.error(data?.message || 'Invalid credentials');
       }
     } catch (error) {
       console.error('❌ Error:', error);
@@ -125,6 +128,7 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               className='text-gray-700 border border-gray-400 rounded w-full h-12 pl-4 mb-3'
+              autoComplete='username'
             />
 
             <label>Password</label>
@@ -135,6 +139,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               className='text-gray-700 border border-gray-400 rounded w-full h-12 pl-4 mb-4'
+              autoComplete='current-password'
             />
 
             <button
