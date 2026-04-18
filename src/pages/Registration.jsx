@@ -50,7 +50,7 @@ const Registration = () => {
 
     if (!passwordRegex.test(formData.password)) {
       toast.error(
-        'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character'
+        'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character',
       );
       return;
     }
@@ -70,7 +70,7 @@ const Registration = () => {
           password: formData.password,
         }),
       });
-
+      const data = await response.json();
       if (response.ok) {
         toast.success('Account created successfully!');
         localStorage.setItem(
@@ -78,11 +78,11 @@ const Registration = () => {
           JSON.stringify({
             name: formData.name,
             email: formData.email,
-          })
+          }),
         );
         navigate('/login');
       } else {
-        toast.error('Registration failed');
+        toast.error(data.message || 'Registration failed');
       }
     } catch (error) {
       console.error('❌ Error during registration:', error);
